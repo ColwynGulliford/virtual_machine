@@ -1,0 +1,30 @@
+input:
+  cathode:
+    MTE:
+      type: float
+      prec: 16
+      value: 150
+      units: meV
+
+    QE: 
+       type: float
+       prec: 16
+       value: 0.01
+       units: dimensionless
+
+  laser:
+    power:
+      type: float
+      prec: 16
+      value: 1
+      units: mW
+
+output:
+  dist:
+    r_dist:
+      type: float
+      prec: 16
+      count: 1000
+      units: 1/mm^2
+    
+    
