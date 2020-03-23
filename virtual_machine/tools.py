@@ -1,3 +1,8 @@
+def vprint(msg, verbose):
+
+    if(verbose):
+        print(msg)
+
 def set_nested_dict(dd, flatkey, val, sep=':', prefix=''):
     """
     Set a value inside nested dicts using a key string. 
@@ -38,7 +43,19 @@ def get_nested_dict(dd, flatkey, sep=':', prefix='distgen'):
         d = d[k]
     return d
 
-#def get_flat_keys(dd,sep=':'):
+def is_floatable(test_float):
+    try:
+        float(test_float)
+        is_float=True
+    except:
+        is_float=False
+    return is_float
+
+def convert_unit_registry(Q, ureg):
+    return ureg(str(Q))
+
+    
+        
+        
 
 
-#    for k in 

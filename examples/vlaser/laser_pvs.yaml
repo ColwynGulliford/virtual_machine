@@ -1,30 +1,113 @@
 input:
-  cathode:
-    MTE:
-      type: float
-      prec: 16
-      value: 150
-      units: meV
-
-    QE: 
-       type: float
-       prec: 16
-       value: 0.01
-       units: dimensionless
 
   laser:
-    power:
+    pulse_energy:
       type: float
       prec: 16
       value: 1
-      units: mW
+      unit: mJ
+      lolim: 0
+      hilim: 1
+
+#    rep_rate:
+#      type: float
+#      prec: 16
+#      value: 50 
+#      unit: MHz
+      
+#    wavelength:
+#      type: float
+#      prec: 16
+#      value: 520
+#      unit: nm
+
+    xy_length:
+      type: float
+      prec: 16
+      value: 1
+      unit: mm
+      lolim: 1e-3
+      hilim: 10
+
+    alpha_xy:
+      type: float
+      prec: 16
+      value: 0
+      unit: ''
+      lolim: 0
+      hilim: 1
+
+    t_length:
+      type: float
+      prec: 16
+      value: 8
+      unit: ps
+      lolim: 0
+      hilim: 25
+
+    alpha_t:
+      type: float
+      prec: 16
+      value: 0
+      unit: ''
+      lolim: 0
+      hilim: 1
+
+    r_npts:
+      value: 1000
+      type: int
+      prec: 16
+      count: 1
+      unit: ''
+      lolim: 100
+      hilim: 10000
+
+    t_npts:
+      value: 1000
+      type: int
+      prec: 16
+      count: 1
+      unit: ''
+      lolim: 100
+      hilim: 10000
 
 output:
+
   dist:
-    r_dist:
+    r: 
       type: float
       prec: 16
       count: 1000
-      units: 1/mm^2
-    
+      unit: mm
+
+    Pr:
+      type: float
+      prec: 16
+      count: 1000
+      unit: mJ/mm^2
+
+    sigma_xy: 
+      type: float
+      prec: 16
+      count: 1
+      unit: mm
+
+    t:
+      type: float
+      prec: 16
+      count: 1000
+      unit: ps
+
+    Pt:
+      type: float
+      prec: 16 
+      count: 1000
+      unit: 'W'
+
+    sigma_t:
+      type: float
+      prec: 16
+      count: 1
+      unit: ps
+
     
