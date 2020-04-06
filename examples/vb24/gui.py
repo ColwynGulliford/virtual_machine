@@ -185,17 +185,19 @@ keplot.yaxis.axis_label = 'KE (keV)'
 
 def update():
 
+    fpower = get_fractional_laser_power(laser_pvs,pvdb)
+
     xy_image = get_laser_dist(laser_pvs, xx, yy)
     img_obj.data_source.data.update({'image': [xy_image]})
         
     beamsize_source.data = get_beam_data(beam_pvs)
-    Tsource.data = dict(x=avgz, y1=beam_pvs['beam:transmission'].value*caget('laser_on'), y2=zero)
-    kesource.data = dict(x=avgz, y=beam_pvs['beam:KE'].value*caget('laser_on'))
+    Tsource.data = dict(x=avgz, y1=beam_pvs['beam:transmission'].value*caget('laser_on')*fpower, y2=zero)
+    kesource.data = dict(x=avgz, y=beam_pvs['beam:KE'].value*caget('laser_on')*fpower)
 
     for pv_slider in laser_pv_sliders + beamline_pv_sliders: 
         pv_slider.set_slider_from_pv()
 
-    kwargs = {'fill_alpha':get_fractional_laser_power(laser_pvs,pvdb)}
+    kwargs = {'fill_alpha':fpower}
     beamsize_glyph.update(**kwargs)
     glyphT.update(**kwargs)
 

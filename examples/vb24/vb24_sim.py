@@ -106,8 +106,6 @@ class b24Model():
         photon_flux = (laser_power/(hc/laser_wavelength) ).to_base_units()
         gun_current = (photon_flux*cathode_QE*(1*units.e)).to(self.pvdefs[f'{tag}gun:current']['unit'])
        
-        
-
         distgen_input = yaml.dump(
                         {'n_particle':inputs[f'{tag}gpt:n_particle'].magnitude,
                          'random_type':'hammersley',
@@ -161,7 +159,7 @@ class b24Model():
 
         G = GPT(input_file=os.path.join(cwd,'templates/gpt.in'), 
                 initial_particles = ParticleGroup(data=beam.data()), 
-                use_tempdir=False,
+                use_tempdir=True,
                 workdir=os.path.join(cwd,'tmp'),
                 timeout = 5,
                 verbose=True)
@@ -174,12 +172,12 @@ class b24Model():
         result = G.set_variables(settings)
         G.run()
     
-        stdx = np.zeros((len(G.screen,)))
+        stdx  = np.zeros((len(G.screen,)))
         avgKE = np.zeros((len(G.screen,)))
-        avgz = np.zeros((len(G.screen,)))
-        avgx = np.zeros((len(G.screen,)))
-        avgy = np.zeros((len(G.screen,)))
-        maxr = np.zeros((len(G.screen,)))
+        avgz  = np.zeros((len(G.screen,)))
+        avgx  = np.zeros((len(G.screen,)))
+        avgy  = np.zeros((len(G.screen,)))
+        maxr  = np.zeros((len(G.screen,)))
         trans = np.zeros((len(G.screen,)))
 
         for ii,screen in enumerate(G.screen):
