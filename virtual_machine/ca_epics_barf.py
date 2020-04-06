@@ -1,36 +1,91 @@
 
-from pcaspy import Driver, SimpleServer
+from pcaspy import Driver
+from pcaspy import SimpleServer, Alarm, Severity
+
 import time
-from epics import caget, PV
 import numpy as np
 import yaml
-import warnings
+#import warnings
 
-from virtual_machine.tools import vprint
-from virtual_machine.tools import set_nested_dict
+#from virtual_machine.tools import vprint
+#from virtual_machine.tools import set_nested_dict
 
-from pint import UnitRegistry, Quantity
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    Quantity([])
-unit_registry = UnitRegistry()
-unit_registry.setup_matplotlib()
+#from pint import UnitRegistry, Quantity
+#with warnings.catch_warnings():
+#    warnings.simplefilter("ignore")
+#    Quantity([])
+#unit_registry = UnitRegistry()
+#unit_registry.setup_matplotlib()
+
+class ReadWriteDriver(Driver):
+
+    def __init__(self):
+
+        super(ReadWriteDriver, self).__init__()
+        self.status_set={}
+ 
+    def read(self,reason): 
+
+        if(reason not in self.status_set.keys()):
+            self.status_set[reason]="True"
+            self.setParamStatus(reason,Alarm.NO_ALARM,Severity.NO_ALARM)
+
+        return self.getParam(reason)
+                
+    def write(self,reason,value):
+        self.setParam(reason,value)
+        return True
+
+def epics_ca_ioc(pv_input):
+
+    if(isinstance(pv_input,str)):
+        pvdefs = yaml.safe_load(open(pv_input))
+    elif(isinstance(pv_input,dict)):
+        pvdefs = pv_input
+
+    prefix = pvdefs['prefix']
+    pvdb = pvdefs['pv']
+    server = SimpleServer()
+    server.createPV(prefix, pvdb)
+
+    driver = ReadWriteDriver()
+
+    while True:
+        # process CA transactions
+        server.process(0.1)
 
 class Model():
 
-    def __init__(self,**kwargs):
+    def __init__(self,inputs,outputs):
         pass
 
-    def run(self,input_state,verbose=False):
+    def run(self,current_inputs,verbose=False):
         if(verbose):
             print('running empty model')
         return {}
+
+class Simulator():
+
+    def __init__(self,pv_file):
+
+        self.pvdb = yaml.safe_load(open(pv_file))
+
+        self.models = {} 
+
+
+
+    def add_model(self, name, model):
+        self.models[named] = model
+
+
+
+
 
 
 def parse_pv_file(pv_file):
     return yaml.safe_load(open(pv_file))
 
-
+"""
 class SimCADriver(Driver):
 
     def __init__(self, input_pvs, output_pvs):
@@ -251,4 +306,4 @@ class SyncedSimCAServer(SimCAServer):
 
     def stop(self):
         self.serve_data=False
-
+"""

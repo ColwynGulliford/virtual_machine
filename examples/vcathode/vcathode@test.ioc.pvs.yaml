@@ -1,0 +1,69 @@
+prefix: 'vcathode@test:'
+pv:
+  MTE:
+    count: 1
+    prec: 16
+    type: float
+    unit: meV
+    value: 150
+  Pr:
+    count: 1000
+    prec: 16
+    type: float
+    unit: pC/mm^2
+  Pt:
+    count: 1000
+    prec: 16
+    type: float
+    unit: A
+  QE:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 0.01
+  alpha_t:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 1
+  alpha_xy:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 1
+  q_bunch:
+    count: 1
+    prec: 16
+    type: float
+    unit: pC
+    value: 1
+  r:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mm
+  sigma_t:
+    count: 1
+    prec: 16
+    type: float
+    unit: ps
+    value: 1
+  sigma_xy:
+    count: 1
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  status:
+    count: 1
+    type: int
+    unit: ''
+    value: 0
+  t:
+    count: 1000
+    prec: 16
+    type: float
+    unit: ps

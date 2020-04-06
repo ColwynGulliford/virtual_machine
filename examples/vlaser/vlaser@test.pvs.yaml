@@ -1,0 +1,84 @@
+input:
+  alpha_t:
+    hilim: 1
+    lolim: 0
+    prec: 16
+    type: float
+    unit: ''
+    value: 0
+  alpha_xy:
+    hilim: 1
+    lolim: 0
+    prec: 16
+    type: float
+    unit: ''
+    value: 0
+  pulse_energy:
+    hilim: 50
+    lolim: 0
+    prec: 16
+    type: float
+    unit: nJ
+    value: 10
+  r_npts:
+    count: 1
+    hilim: 10000
+    lolim: 100
+    prec: 16
+    type: int
+    unit: ''
+    value: 1000
+  rep_rate:
+    prec: 16
+    type: float
+    unit: MHz
+    value: 50
+  sigma_t:
+    hilim: 25
+    lolim: 1e-3
+    prec: 16
+    type: float
+    unit: ps
+    value: 8
+  sigma_xy:
+    hilim: 10
+    lolim: 1e-3
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  t_npts:
+    count: 1
+    hilim: 10000
+    lolim: 100
+    prec: 16
+    type: int
+    unit: ''
+    value: 1000
+  wavelength:
+    prec: 16
+    type: float
+    unit: nm
+    value: 520
+name: vlaser@test
+output:
+  Pr:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mJ/mm^2
+  Pt:
+    count: 1000
+    prec: 16
+    type: float
+    unit: MW
+  r:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mm
+  t:
+    count: 1000
+    prec: 16
+    type: float
+    unit: ps

@@ -1,0 +1,172 @@
+prefix: 'vb24@test:'
+pv:
+  beam:KE:
+    count: 500
+    prec: 16
+    type: float
+    unit: keV
+    value: 1
+  beam:avg_x:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+  beam:avg_y:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+  beam:current:
+    count: 500
+    prec: 16
+    type: float
+    unit: mA
+    value: 1
+  beam:max_radius:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  beam:sigma_xy:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  beam:transmission:
+    count: 500
+    prec: 16
+    type: float
+    unit: ''
+    value: 1
+  beam:z:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+  cathode:MTE:
+    count: 1
+    prec: 16
+    type: float
+    unit: meV
+    value: 150
+  cathode:QE:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 0.01
+  gpt:n_particle:
+    type: int
+    value: 200
+  gpt:n_screen:
+    type: int
+    value: 500
+  gun:current:
+    prec: 16
+    type: float
+    unit: mA
+    value: 1
+  gun:voltage:
+    hilim: 400
+    lolim: 20.0
+    prec: 16
+    type: float
+    unit: kV
+    value: 300
+  laser:Pr:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mW/mm^2
+    value: 1
+  laser:alpha_xy:
+    hilim: 1.0
+    lolim: 0.0
+    prec: 16
+    type: float
+    unit: ''
+    value: 1.0
+  laser:avg_x:
+    hilim: 10.0
+    lolim: -10.0
+    prec: 16
+    type: float
+    unit: mm
+    value: 0.0
+  laser:avg_y:
+    hilim: 10.0
+    lolim: -10.0
+    prec: 16
+    type: float
+    unit: mm
+    value: 0.0
+  laser:power:
+    count: 1
+    hilim: 100
+    lolim: 0.0
+    prec: 16
+    type: float
+    unit: mW
+    value: 0.0
+  laser:r:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  laser:sigma_xy:
+    hilim: 10.0
+    lolim: 1e-3
+    prec: 16
+    type: float
+    unit: mm
+    value: 1.0
+  laser:wavelength:
+    prec: 16
+    type: float
+    unit: nm
+    value: 520
+  scr1:avg_x:
+    prec: 16
+    type: float
+    unit: mm
+    value: 0
+  scr1:avg_y:
+    prec: 16
+    type: float
+    unit: mm
+    value: 0
+  scr1:sigma_x:
+    prec: 16
+    type: float
+    unit: mm
+    value: 0
+  scr1:sigma_y:
+    prec: 16
+    type: float
+    unit: mm
+    value: 0
+  scr1:z:
+    prec: 16
+    type: float
+    unit: mm
+    value: 1.5
+  sim:status:
+    type: int
+    value: 0
+  sol1:current:
+    hilim: 6.0
+    lolim: -6.0
+    prec: 16
+    type: float
+    unit: A
+    value: 3.5
+  sol2:current:
+    hilim: 6.0
+    lolim: -6.0
+    prec: 16
+    type: float
+    unit: A
+    value: 3.5

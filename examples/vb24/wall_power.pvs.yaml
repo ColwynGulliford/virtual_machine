@@ -1,0 +1,8 @@
+prefix: ''
+pv:
+  gun_on:
+    type: int
+    value: 0
+  laser_on:
+    type: int
+    value: 0

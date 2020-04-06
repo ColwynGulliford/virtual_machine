@@ -1,3 +1,7 @@
+from .physical_constants import unit_registry as ureg
+
+import time
+
 def vprint(msg, verbose):
 
     if(verbose):
@@ -54,8 +58,23 @@ def is_floatable(test_float):
 def convert_unit_registry(Q, ureg):
     return ureg(str(Q))
 
-    
-        
-        
+def timeit(method):
+
+    def timed(*args, **kw):
+
+        tstart = time.time() * ureg.second
+        result = method(*args, **kw)
+        tstop = time.time() * ureg.second
+
+        if(kw['verbose']):
+            dt = '{0:.3f}'.format((tstop-tstart).to_compact())
+            print ( f'Time ellapsed executing {method.__name__}: {dt}' )
+
+        return result
+
+    return timed
+
+
+
 
 

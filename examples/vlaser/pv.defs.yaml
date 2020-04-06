@@ -1,0 +1,99 @@
+input:
+  pulse_energy:
+    type: float
+    prec: 16
+    value: 10
+    unit: nJ
+    lolim: 0
+    hilim: 50
+
+  rep_rate:
+    type: float
+    prec: 16
+    value: 50 
+    unit: MHz
+      
+  wavelength:
+    type: float
+    prec: 16
+    value: 520
+    unit: nm
+
+  sigma_xy:
+    type: float
+    prec: 16
+    value: 1
+    unit: mm
+    lolim: 1e-3
+    hilim: 10
+
+  alpha_xy:
+    type: float
+    prec: 16
+    value: 0
+    unit: ''
+    lolim: 0
+    hilim: 1
+
+  sigma_t:
+    type: float
+    prec: 16
+    value: 8
+    unit: ps
+    lolim: 1e-3
+    hilim: 25
+
+  alpha_t:
+    type: float
+    prec: 16
+    value: 0
+    unit: ''
+    lolim: 0
+    hilim: 1
+
+  r_npts:
+    value: 1000
+    type: int
+    prec: 16
+    count: 1
+    unit: ''
+    lolim: 100
+    hilim: 10000
+
+  t_npts:
+    value: 1000
+    type: int
+    prec: 16
+    count: 1
+    unit: ''
+    lolim: 100
+    hilim: 10000
+
+output:
+
+  r: 
+    type: float
+    prec: 16
+    count: 1000
+    unit: mm
+
+  Pr:
+    type: float
+    prec: 16
+    count: 1000
+    unit: mJ/mm^2
+
+  t:
+    type: float
+    prec: 16
+    count: 1000
+    unit: ps
+
+  Pt:
+    type: float
+    prec: 16 
+    count: 1000
+    unit: 'MW'
+
+
+    

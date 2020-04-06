@@ -1,0 +1,115 @@
+input:
+
+  laser:wavelength:
+    type: float
+    prec: 16
+    value: 520
+    unit: nm
+
+  laser:power:
+    type: float
+    prec: 16
+    value: 
+    unit: mW
+
+  laser:sigma_xy:
+    type: float
+    prec: 16
+    value: 1
+    unit: mm
+    lolim: 1e-3
+    hilim: 10
+
+  cathode:MTE:
+    type: float
+    prec: 16
+    count: 1
+    unit: meV
+    value: 150
+
+  cathode:QE:
+    type: float
+    value: 0.01
+    prec: 16
+    count: 1
+    unit: ''
+
+#  gpt:n_particle:
+#    type: int
+#    value: 200
+
+#  gpt:n_screen:
+#    type: int
+#    value: 500
+
+  gun_voltage:
+    sol_1_current:
+    type: float
+    value: 300
+    prec: 16
+    unit: kV
+
+  sol_1_current:
+    type: float
+    value: 3.5
+    prec: 16
+    unit: A
+
+  sol_2_current:
+    type: float
+    value: 3.5
+    prec: 16
+    unit: A
+  
+output:
+
+#  status:
+#    type: int
+#    value: 0
+#    count: 1
+#    unit: ''
+
+  beam:transmission:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: ''
+ 
+  beam:current:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mA
+
+  beam:z:
+    type: float
+    prec: 16 
+    count: 500
+    unit: mm
+
+  beam:sigma_xy:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mm
+
+  beam:max_radius:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mm
+
+  beam:KE:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: keV
+
+
+
+    

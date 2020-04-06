@@ -1,0 +1,77 @@
+input:
+  vcathode@test:MTE:
+    count: 1
+    prec: 16
+    type: float
+    unit: meV
+    value: 150
+  vcathode@test:QE:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 0.01
+monitor:
+  vlaser@test:alpha_t:
+    unit: ''
+  vlaser@test:alpha_xy:
+    unit: ''
+  vlaser@test:pulse_energy:
+    unit: nJ
+  vlaser@test:sigma_t:
+    unit: ps
+  vlaser@test:sigma_xy:
+    unit: mm
+  vlaser@test:wavelength:
+    unit: nm
+output:
+  vcathode@test:Pr:
+    count: 1000
+    prec: 16
+    type: float
+    unit: pC/mm^2
+  vcathode@test:Pt:
+    count: 1000
+    prec: 16
+    type: float
+    unit: A
+  vcathode@test:alpha_t:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 1
+  vcathode@test:alpha_xy:
+    count: 1
+    prec: 16
+    type: float
+    unit: ''
+    value: 1
+  vcathode@test:q_bunch:
+    count: 1
+    prec: 16
+    type: float
+    unit: pC
+    value: 1
+  vcathode@test:r:
+    count: 1000
+    prec: 16
+    type: float
+    unit: mm
+  vcathode@test:sigma_t:
+    count: 1
+    prec: 16
+    type: float
+    unit: ps
+    value: 1
+  vcathode@test:sigma_xy:
+    count: 1
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  vcathode@test:t:
+    count: 1000
+    prec: 16
+    type: float
+    unit: ps

@@ -1,0 +1,214 @@
+sync:
+    gun_on:
+        gun:current:
+            operation: '*'
+        
+    laser_on:
+        laser:power:
+            operation: '*'
+
+input:
+
+  laser:wavelength:
+    type: float
+    prec: 16
+    value: 520
+    unit: nm
+
+  laser:power:
+    type: float
+    prec: 16
+    count: 1
+    unit: mW
+    value: 0.0
+    lolim: 0.0
+    hilim: 100
+
+  laser:avg_x:
+    type: float
+    prec: 16
+    value: 0.0
+    unit: mm
+    lolim: -10.0
+    hilim: 10.0
+
+  laser:avg_y:
+    type: float
+    prec: 16
+    value: 0.0
+    unit: mm
+    lolim: -10.0
+    hilim: 10.0
+
+  laser:sigma_xy:
+    type: float
+    prec: 16
+    value: 1.0
+    unit: mm
+    lolim: 1e-3
+    hilim: 10.0
+
+  laser:alpha_xy:
+    type: float
+    prec: 16
+    value: 1.0
+    unit: ''
+    lolim: 0.0
+    hilim: 1.0
+
+  cathode:MTE:
+    type: float
+    prec: 16
+    count: 1
+    unit: meV
+    value: 150
+
+  cathode:QE:
+    type: float
+    value: 0.01
+    prec: 16
+    count: 1
+    unit: ''
+
+  gpt:n_particle:
+    type: int
+    value: 200
+
+  gpt:n_screen:
+    type: int
+    value: 500
+
+  gun:voltage:
+    type: float
+    value: 300
+    prec: 16
+    unit: kV
+    lolim: 20.0
+    hilim: 400
+
+  sol1:current:
+    type: float
+    value: 3.5
+    prec: 16
+    unit: A
+    lolim: -6.0
+    hilim: 6.0
+
+  sol2:current:
+    type: float
+    value: 3.5
+    prec: 16
+    unit: A
+    lolim: -6.0
+    hilim: 6.0
+  
+  scr1:z:
+    type: float
+    value: 1.5
+    prec: 16
+    unit: 'mm'
+
+output:
+
+  sim:status:
+    type: int
+    value: 0
+
+  gun:current:
+    type: float
+    value: 1
+    prec: 16
+    unit: mA
+
+  laser:r:
+    type: float
+    value: 1
+    prec: 16
+    count: 1000
+    unit: mm
+
+  laser:Pr:
+    type: float
+    value: 1
+    prec: 16
+    count: 1000
+    unit: mW/mm^2
+
+  beam:transmission:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: ''
+ 
+  beam:current:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mA
+
+  beam:z:
+    type: float
+    prec: 16 
+    count: 500
+    unit: mm
+
+  beam:avg_x:
+    type: float
+    prec: 16 
+    count: 500
+    unit: mm
+
+  beam:avg_y:
+    type: float
+    prec: 16 
+    count: 500
+    unit: mm
+
+  beam:sigma_xy:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mm
+
+  beam:max_radius:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mm
+
+  beam:KE:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: keV
+
+  scr1:sigma_x:
+    type: float
+    value: 0
+    prec: 16
+    unit: mm
+
+  scr1:sigma_y:
+    type: float
+    value: 0
+    prec: 16
+    unit: mm
+
+  scr1:avg_x:
+    type: float
+    value: 0
+    prec: 16
+    unit: mm
+
+  scr1:avg_y:
+    type: float
+    value: 0
+    prec: 16
+    unit: mm
+
+    

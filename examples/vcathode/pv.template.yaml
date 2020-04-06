@@ -1,0 +1,93 @@
+monitor:
+  vlaser@mid:
+    - pulse_energy
+    - wavelength
+    - sigma_xy
+    - alpha_xy
+    - sigma_t
+    - alpha_t
+
+input:
+
+  MTE:
+    type: float
+    prec: 16
+    count: 1
+    unit: meV
+    value: 150
+
+  QE:
+    type: float
+    value: 0.01
+    prec: 16
+    count: 1
+    unit: ''
+      
+output:
+
+  status:
+    type: int
+    value: 0
+    count: 1
+    unit: ''
+
+  q_bunch:
+    type: float
+    value: 1
+    prec: 16
+    count: 1
+    unit: pC
+
+  sigma_xy:
+    type: float
+    value: 1
+    prec: 16
+    count: 1
+    unit: mm
+
+  alpha_xy:
+    type: float
+    value: 1
+    prec: 16
+    count: 1
+    unit: ''
+  
+  sigma_t:
+    type: float
+    value: 1
+    prec: 16
+    count: 1
+    unit: ps
+
+  alpha_t:
+    type: float
+    value: 1
+    prec: 16
+    count: 1
+    unit: ''    
+
+  r: 
+    type: float
+    prec: 16
+    count: 1000
+    unit: mm
+
+  Pr:
+    type: float
+    prec: 16
+    count: 1000
+    unit: pC/mm^2
+
+  t:
+    type: float
+    prec: 16
+    count: 1000
+    unit: ps
+
+  Pt:
+    type: float
+    prec: 16 
+    count: 1000
+    unit: 'A'
+
+    
