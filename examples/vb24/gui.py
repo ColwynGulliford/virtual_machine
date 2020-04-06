@@ -83,7 +83,7 @@ def get_xy_image(xx, x0, yy, y0, r, Pr):
     n,m = xx.shape
     
     rr = np.reshape(rr, (n*m,1) )
-    pp = np.interp(rr, r, Pr)*caget('laser_on')
+    pp = np.interp(rr, r, Pr)
     
     return np.reshape(pp, xx.shape)
 
@@ -94,7 +94,7 @@ def get_laser_dist(laser_pvs, xx, yy):
     rs = laser_pvs['laser:r'].value
     Pr = laser_pvs['laser:Pr'].value
 
-    return get_xy_image(xx, x0, yy, y0, rs, Pr)
+    return get_xy_image(xx, x0, yy, y0, rs, Pr)*caget('laser_on')
 
 # Set up the initial laser image and source object
 xy_image = get_laser_dist(laser_pvs, xx, yy)

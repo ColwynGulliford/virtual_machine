@@ -2,7 +2,7 @@ import yaml
 from optparse import OptionParser
 
 # For IOC testing
-from virtual_machine.ca_epics_barf import epics_ca_ioc
+from virtual_machine.ca_epics import epics_ca_ioc
 
 def set_up(pv_template, target, tid,):
 
