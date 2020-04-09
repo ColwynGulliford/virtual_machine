@@ -4,7 +4,7 @@ import yaml
 import numpy as np
 from epics import caget_many, PV, caget, caput
 
-from bokeh.models import ColumnDataSource, Slider, TextInput, ColorBar, LinearColorMapper, Range1d, LogTicker, Toggle
+from bokeh.models import ColumnDataSource, Slider, TextInput, ColorBar, LinearColorMapper, Range1d, LogTicker, Toggle, Paragraph
 from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
@@ -61,7 +61,7 @@ laser_pvs = { pv.replace(prefix,''):PV(f'{pv}',auto_monitor=True) for pv in list
 
 # Get the PV slider and related slider objects:
 laser_pv_sliders=[]
-for name in ['laser:power', 'laser:sigma_xy', 'laser:alpha_xy', 'laser:avg_x', 'laser:avg_y']:
+for name in ['laser:power', 'laser:sigma_xy', 'laser:alpha_xy', 'laser:mean_x', 'laser:mean_y']:
     lolim = pvdb['input'][f'{prefix}{name}']['lolim']
     hilim = pvdb['input'][f'{prefix}{name}']['hilim']
     units = pvdb['input'][f'{prefix}{name}']['unit']
@@ -89,8 +89,8 @@ def get_xy_image(xx, x0, yy, y0, r, Pr):
 
 def get_laser_dist(laser_pvs, xx, yy):
     
-    x0 = laser_pvs['laser:avg_x'].value
-    y0 = laser_pvs['laser:avg_y'].value
+    x0 = laser_pvs['laser:mean_x'].value
+    y0 = laser_pvs['laser:mean_y'].value
     rs = laser_pvs['laser:r'].value
     Pr = laser_pvs['laser:Pr'].value
 
@@ -140,11 +140,11 @@ beamline_sliders = [pv_slider.slider for pv_slider in beamline_pv_sliders]
 beam_pvs = { pv.replace(prefix,''):PV(f'{pv}',auto_monitor=True) for pv in pvdb['output'] if 'beam' in pv }
 
 def get_beam_data(beam_pvs):
-    avgx = beam_pvs['beam:avg_x'].value
-    avgy = beam_pvs['beam:avg_y'].value
-    avgz = beam_pvs['beam:z'].value
-    stdxy = beam_pvs['beam:sigma_xy'].value
-    maxr = beam_pvs['beam:max_radius'].value
+    avgx = beam_pvs['beam:mean_x'].value
+    avgy = beam_pvs['beam:mean_y'].value
+    avgz = beam_pvs['beam:mean_z'].value
+    stdxy = beam_pvs['beam:sigma_x'].value
+    maxr = beam_pvs['beam:max_r'].value
 
     power_on = caget('laser_on')
 
@@ -156,7 +156,7 @@ def get_fractional_laser_power(laser_pvs, pvdb):
     return (laser_pvs['laser:power'].value)/pvdb['input'][f'{prefix}laser:power']['hilim']
 frac_power = get_fractional_laser_power(laser_pvs, pvdb)
 
-avgz = beam_pvs['beam:z'].value
+avgz = beam_pvs['beam:mean_z'].value
 beamsize_plot = figure(plot_height=200, plot_width=800, title="vB24", tools="crosshair,pan,reset,save,wheel_zoom", x_range=[0, avgz[-1]], y_range=[-5,5])
 beamsize_glyph = VArea(x="x", y1="y1", y2="y2", fill_color="blue", fill_alpha=frac_power)
 
@@ -175,13 +175,16 @@ transplot.xaxis.axis_label = 's (m)'
 transplot.yaxis.axis_label = 'Transmission (%)'
 
 # KE Plot
-KE = beam_pvs['beam:KE'].value
+KE = beam_pvs['beam:mean_kinetic_energy'].value
 kesource =  ColumnDataSource( data=dict(x=avgz, y=KE) )
 keplot = figure(plot_height=200, plot_width=800, title="vB24", tools="crosshair,pan,reset,save,wheel_zoom", x_range=[0, avgz[-1]])
 keplot.line(x='x',y='y',source=kesource)
 keplot.xaxis.axis_label = 's (m)'
 keplot.yaxis.axis_label = 'KE (keV)'
 
+
+gun_current_pv = PV(f'{prefix}gun:current')
+p = Paragraph(text=f'Gun Current: {gun_current_pv.value:G} (mA)')
 
 def update():
 
@@ -191,8 +194,8 @@ def update():
     img_obj.data_source.data.update({'image': [xy_image]})
         
     beamsize_source.data = get_beam_data(beam_pvs)
-    Tsource.data = dict(x=avgz, y1=beam_pvs['beam:transmission'].value*caget('laser_on')*fpower, y2=zero)
-    kesource.data = dict(x=avgz, y=beam_pvs['beam:KE'].value*caget('laser_on')*fpower)
+    Tsource.data = dict(x=avgz, y1=beam_pvs['beam:transmission'].value*caget('laser_on'), y2=zero)
+    kesource.data = dict(x=avgz, y=beam_pvs['beam:mean_kinetic_energy'].value*caget('laser_on'))
 
     for pv_slider in laser_pv_sliders + beamline_pv_sliders: 
         pv_slider.set_slider_from_pv()
@@ -201,13 +204,16 @@ def update():
     beamsize_glyph.update(**kwargs)
     glyphT.update(**kwargs)
 
+    p.text = f'Gun Current: {gun_current_pv.value:G} (mA)'
+ 
 # Quckly throw together the final pieces:
 wlength = row([wavelength_txt_box.text_input], width=500) 
 
 laser_slider_col = column(laser_sliders, width=350)
 beamline_slider_col = column(beamline_sliders, width=350)
 
-curdoc().add_root(  row(column(laser_on_button, wlength, laser_fig, laser_slider_col), column(beamsize_plot, transplot, keplot, beamline_slider_col))  )
+curdoc().add_root(  row(column(laser_on_button, wlength, laser_fig, laser_slider_col), 
+                        column(beamsize_plot, transplot, keplot,    row(beamline_slider_col,p)))  )
 
 #curdoc().add_root( row(column(buttons, p1, xyscol), column(xyplot,transplot,keplot,bscol))  ) 
 curdoc().add_periodic_callback(update, 250)

@@ -68,7 +68,12 @@ class PVMonitorArray():
 
     @timeit
     def put(self, pvd, verbose=True):
-        caput_many(pvd.keys(), pvd.values())     
+        if(verbose):
+            for pv in pvd:
+                print(pv+',' ,'caput success:', caput(pv, pvd[pv]))
+
+        else:
+            caput_many(pvd.keys(), pvd.values())     
 
 class b24Model():
 
@@ -83,17 +88,19 @@ class b24Model():
        
         tag = f'vb24@{self.id}:'
 
+        #----------------------------------------------------------------------------
+        # Get laser distribution, cathode quantities, and gun current
+        #----------------------------------------------------------------------------
         r_params = {'sigma_xy': dunits(str(inputs[f'{tag}laser:sigma_xy'])),
                     'alpha':    dunits(str(inputs[f'{tag}laser:alpha_xy']))}
         
         count = self.pvdefs[f'{tag}laser:r']['count']
-
         laser_wavelength = inputs[f'{tag}laser:wavelength']
         laser_power = inputs[f'{tag}laser:power']
         laser_sigma_xy = inputs[f'{tag}laser:sigma_xy']
         laser_alpha_xy = inputs[f'{tag}laser:alpha_xy']
-        laser_avg_x = inputs[f'{tag}laser:avg_x']
-        laser_avg_y = inputs[f'{tag}laser:avg_y']
+        laser_avg_x = inputs[f'{tag}laser:mean_x']
+        laser_avg_y = inputs[f'{tag}laser:mean_y']
 
         r_dist = SuperGaussianRad(verbose=False, **r_params)
         rs = (r_dist.get_r_pts(count)).to(self.pvdefs[f'{tag}laser:r']['unit'])
@@ -105,62 +112,48 @@ class b24Model():
         hc = 1*units.h*units.c
         photon_flux = (laser_power/(hc/laser_wavelength) ).to_base_units()
         gun_current = (photon_flux*cathode_QE*(1*units.e)).to(self.pvdefs[f'{tag}gun:current']['unit'])
+        #----------------------------------------------------------------------------
        
+
+        #----------------------------------------------------------------------------
+        # Create Distgen input and run generator
+        #----------------------------------------------------------------------------
         distgen_input = yaml.dump(
                         {'n_particle':inputs[f'{tag}gpt:n_particle'].magnitude,
                          'random_type':'hammersley',
-                         'total_charge': {
-                             'value': 0.0, 
-                             'units': 'pC'
-                         },   
+                         'total_charge': {'value': 0.0, 'units': 'pC'},   
                          'start': {
                              'type':'cathode',
-                             'MTE': {
-                                 'value': cathode_MTE.magnitude,
-                                 'units': str(cathode_MTE.units)
-                             }
-                         },
+                             'MTE': {'value': cathode_MTE.magnitude, 'units': str(cathode_MTE.units)}},
+
                          'r_dist': {
                              'type':'rsg',
-                             'sigma_xy':{
-                                 'value': laser_sigma_xy.magnitude,
-                                 'units': str(laser_sigma_xy.units)
-                             },
-                             'alpha':{
-                                 'value': laser_alpha_xy.magnitude,
-                                 'units': str(laser_alpha_xy.units)
-                             },
-                         },
+                             'sigma_xy':{'value': laser_sigma_xy.magnitude, 'units': str(laser_sigma_xy.units)},
+                             'alpha':{'value': laser_alpha_xy.magnitude, 'units': str(laser_alpha_xy.units)},},
+
                          'transforms':{
                              'set_x':{
                                  'type':'set_avg',
                                  'variables': 'x',
-                                 'avg_x': {
-                                     'value': laser_avg_x.magnitude, 
-                                     'units': str(laser_avg_x.units)
-                                 }
-                             },
+                                 'avg_x': {'value': laser_avg_x.magnitude, 'units': str(laser_avg_x.units)}},
                              'set_y':{
                                  'type':'set_avg',
                                  'variables': 'y',
-                                 'avg_y': {
-                                     'value': laser_avg_y.magnitude, 
-                                     'units': str(laser_avg_y.units)
-                                 }
-                             }
-                         }
-                     })
+                                 'avg_y': {'value': laser_avg_y.magnitude, 'units': str(laser_avg_y.units)}}
+                         }})
  
-
         gen = Generator(distgen_input, verbose=True)     
         beam = gen.beam()   
+        #----------------------------------------------------------------------------
 
-        cwd = os.getcwd()
 
-        G = GPT(input_file=os.path.join(cwd,'templates/gpt.in'), 
+        #----------------------------------------------------------------------------
+        # Configure GPT and run
+        #----------------------------------------------------------------------------
+        G = GPT(input_file=os.path.join(os.getcwd(),'templates/gpt.in'), 
                 initial_particles = ParticleGroup(data=beam.data()), 
                 use_tempdir=True,
-                workdir=os.path.join(cwd,'tmp'),
+                workdir=os.path.join(os.getcwd(),'tmp'),
                 timeout = 5,
                 verbose=True)
 
@@ -171,46 +164,38 @@ class b24Model():
 
         result = G.set_variables(settings)
         G.run()
-    
-        stdx  = np.zeros((len(G.screen,)))
-        avgKE = np.zeros((len(G.screen,)))
-        avgz  = np.zeros((len(G.screen,)))
-        avgx  = np.zeros((len(G.screen,)))
-        avgy  = np.zeros((len(G.screen,)))
-        maxr  = np.zeros((len(G.screen,)))
-        trans = np.zeros((len(G.screen,)))
+        #----------------------------------------------------------------------------
 
-        for ii,screen in enumerate(G.screen):
-            avgz[ii]=screen['z'].mean()
-            avgx[ii]=screen['x'].mean()*1000
-            avgy[ii]=screen['y'].mean()*1000
-            stdx[ii]=0.5*(screen['x'].std()+screen['y'].std())*1000
-            maxr[ii]=1000*np.max(np.sqrt(screen['x']**2 + screen['y']**2))
-            avgKE[ii]=510*(screen['G'].mean()-1)
-            trans[ii]=100*len(screen['x'])/len(beam['x'])
-        
-        scr1_z = inputs[f'{tag}scr1:z'].magnitude
-        scr1_avg_x = np.interp(scr1_z, avgz, avgx)
-        scr2_avg_y = np.interp(scr1_z, avgz, avgy)
-        scr1_sigma_x = np.interp(scr1_z, avgz, stdx)
-        scr1_sigma_y = np.interp(scr1_z, avgz, stdx)
 
-        output = {f'{tag}laser:r':rs.magnitude,
-                  f'{tag}laser:Pr':Pr.magnitude,
-                  f'{tag}gun:current':gun_current.magnitude,
-                  f'{tag}beam:z':avgz, 
-                  f'{tag}beam:avg_x':avgx, 
-                  f'{tag}beam:avg_y':avgy, 
-                  f'{tag}beam:KE':avgKE, 
-                  f'{tag}beam:sigma_xy':stdx,
-                  f'{tag}beam:max_radius':maxr,
-                  f'{tag}beam:transmission':trans,
-                  f'{tag}scr1:avg_x': np.interp(scr1_z, avgz, avgx),
-                  f'{tag}scr1:avg_y': np.interp(scr1_z, avgz, avgy),
-                  f'{tag}scr1:sigma_x': np.interp(scr1_z, avgz, stdx),
-                  f'{tag}scr1:sigma_y': np.interp(scr1_z, avgz, stdx)}
-        
+        #----------------------------------------------------------------------------
+        # Load all relevant data into output structure
+        #----------------------------------------------------------------------------
+        # laser distribution
+        output = {f'{tag}laser:r':rs.magnitude, f'{tag}laser:Pr':Pr.magnitude, f'{tag}gun:current':gun_current.magnitude}
+
+        # GPT statistical data
+        stats = {'max':['r'], 'mean':['x', 'y', 'z', 'kinetic_energy'], 'sigma':['x','y']}
+        for stat, variables in stats.items():
+                output = {**output, **{f'{tag}beam:{stat}_{var}': self.gpt_stat_to_pv(G, f'{stat}_{var}', 'screen').magnitude for var in variables} }
+
+        scr_numbers = [1]
+        for scr_number in scr_numbers:
+            z = inputs[f'{tag}scr{scr_number}:mean_z'].magnitude
+            for var in ['x' ,'y']:
+                output[f'{tag}scr{scr_number}:mean_{var}']  = np.interp(z, output[f'{tag}beam:mean_z'], output[f'{tag}beam:mean_{var}'])
+                output[f'{tag}scr{scr_number}:sigma_{var}'] = np.interp(z, output[f'{tag}beam:mean_z'], output[f'{tag}beam:sigma_{var}'])
+                
+        # transmission
+        output[f'{tag}beam:transmission'] = [100*len(screen['x'])/inputs[f'{tag}gpt:n_particle'].magnitude for screen in G.screen]
+        #----------------------------------------------------------------------------
+
+
         return output
+
+    def gpt_stat_to_pv(self, G, name, output_type):
+
+        value = G.stat(name, output_type)*units(str(G.stat_units(name)))
+        return value.to(self.pvdefs[f'vb24@{self.id}:beam:{name}']['unit'])
 
 def set_up(pv_template, target, tid):
 
@@ -297,7 +282,7 @@ if __name__ == '__main__':
             print('\nRunning Model >-----------')
             current_sim_outputs = model.run(current_sim_inputs,verbose=True)
             print('Updating outputs...')
-            output_pvs.put(current_sim_outputs, verbose=True)
+            output_pvs.put(current_sim_outputs, verbose=False)
             print('-----------< done.')
 
         caput(f'{vid}sim:status',1)

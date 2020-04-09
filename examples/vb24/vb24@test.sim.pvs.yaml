@@ -31,14 +31,14 @@ input:
     type: float
     unit: ''
     value: 1.0
-  vb24@test:laser:avg_x:
+  vb24@test:laser:mean_x:
     hilim: 10.0
     lolim: -10.0
     prec: 16
     type: float
     unit: mm
     value: 0.0
-  vb24@test:laser:avg_y:
+  vb24@test:laser:mean_y:
     hilim: 10.0
     lolim: -10.0
     prec: 16
@@ -65,7 +65,7 @@ input:
     type: float
     unit: nm
     value: 520
-  vb24@test:scr1:z:
+  vb24@test:scr1:mean_z:
     prec: 16
     type: float
     unit: mm
@@ -85,35 +85,46 @@ input:
     unit: A
     value: 3.5
 output:
-  vb24@test:beam:KE:
-    count: 500
-    prec: 16
-    type: float
-    unit: keV
-    value: 1
-  vb24@test:beam:avg_x:
-    count: 500
-    prec: 16
-    type: float
-    unit: mm
-  vb24@test:beam:avg_y:
-    count: 500
-    prec: 16
-    type: float
-    unit: mm
   vb24@test:beam:current:
     count: 500
     prec: 16
     type: float
     unit: mA
     value: 1
-  vb24@test:beam:max_radius:
+  vb24@test:beam:max_r:
     count: 500
     prec: 16
     type: float
     unit: mm
     value: 1
-  vb24@test:beam:sigma_xy:
+  vb24@test:beam:mean_kinetic_energy:
+    count: 500
+    prec: 16
+    type: float
+    unit: keV
+    value: 1
+  vb24@test:beam:mean_x:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+  vb24@test:beam:mean_y:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+  vb24@test:beam:mean_z:
+    count: 500
+    prec: 16
+    type: float
+    unit: m
+  vb24@test:beam:sigma_x:
+    count: 500
+    prec: 16
+    type: float
+    unit: mm
+    value: 1
+  vb24@test:beam:sigma_y:
     count: 500
     prec: 16
     type: float
@@ -125,11 +136,6 @@ output:
     type: float
     unit: ''
     value: 1
-  vb24@test:beam:z:
-    count: 500
-    prec: 16
-    type: float
-    unit: mm
   vb24@test:gun:current:
     prec: 16
     type: float
@@ -147,12 +153,12 @@ output:
     type: float
     unit: mm
     value: 1
-  vb24@test:scr1:avg_x:
+  vb24@test:scr1:mean_x:
     prec: 16
     type: float
     unit: mm
     value: 0
-  vb24@test:scr1:avg_y:
+  vb24@test:scr1:mean_y:
     prec: 16
     type: float
     unit: mm

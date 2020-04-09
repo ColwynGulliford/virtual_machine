@@ -24,7 +24,7 @@ input:
     lolim: 0.0
     hilim: 100
 
-  laser:avg_x:
+  laser:mean_x:
     type: float
     prec: 16
     value: 0.0
@@ -32,7 +32,7 @@ input:
     lolim: -10.0
     hilim: 10.0
 
-  laser:avg_y:
+  laser:mean_y:
     type: float
     prec: 16
     value: 0.0
@@ -102,7 +102,7 @@ input:
     lolim: -6.0
     hilim: 6.0
   
-  scr1:z:
+  scr1:mean_z:
     type: float
     value: 1.5
     prec: 16
@@ -148,39 +148,46 @@ output:
     count: 500
     unit: mA
 
-  beam:z:
+  beam:mean_x:
     type: float
     prec: 16 
     count: 500
     unit: mm
 
-  beam:avg_x:
+  beam:mean_y:
     type: float
     prec: 16 
     count: 500
     unit: mm
 
-  beam:avg_y:
+  beam:mean_z:
     type: float
     prec: 16 
     count: 500
-    unit: mm
+    unit: m
 
-  beam:sigma_xy:
+  beam:sigma_x:
     type: float
     value: 1
     prec: 16
     count: 500
     unit: mm
 
-  beam:max_radius:
+  beam:sigma_y:
     type: float
     value: 1
     prec: 16
     count: 500
     unit: mm
 
-  beam:KE:
+  beam:max_r:
+    type: float
+    value: 1
+    prec: 16
+    count: 500
+    unit: mm
+
+  beam:mean_kinetic_energy:
     type: float
     value: 1
     prec: 16
@@ -199,13 +206,13 @@ output:
     prec: 16
     unit: mm
 
-  scr1:avg_x:
+  scr1:mean_x:
     type: float
     value: 0
     prec: 16
     unit: mm
 
-  scr1:avg_y:
+  scr1:mean_y:
     type: float
     value: 0
     prec: 16
