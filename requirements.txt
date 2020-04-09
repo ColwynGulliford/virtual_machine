@@ -3,7 +3,5 @@ scipy
 matplotlib
 h5py
 pint
-pyepics
-pcaspy
 
 
