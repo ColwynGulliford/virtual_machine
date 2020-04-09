@@ -106,6 +106,6 @@ venv.bak/
 
 devel/*
 
-examples/vb24/*@*
+examples/vb24/vb24@*
 examples/vb24/templates/*
 examples/vb24/tmp/*
