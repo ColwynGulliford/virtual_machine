@@ -93,7 +93,7 @@ class b24Model():
         #----------------------------------------------------------------------------
         r_params = {'sigma_xy': dunits(str(inputs[f'{tag}laser:sigma_xy'])),
                     'alpha':    dunits(str(inputs[f'{tag}laser:alpha_xy']))}
-        
+
         count = self.pvdefs[f'{tag}laser:r']['count']
         laser_wavelength = inputs[f'{tag}laser:wavelength']
         laser_power = inputs[f'{tag}laser:power']
@@ -131,16 +131,10 @@ class b24Model():
                              'sigma_xy':{'value': laser_sigma_xy.magnitude, 'units': str(laser_sigma_xy.units)},
                              'alpha':{'value': laser_alpha_xy.magnitude, 'units': str(laser_alpha_xy.units)},},
 
-                         'transforms':{
-                             'set_x':{
-                                 'type':'set_avg',
-                                 'variables': 'x',
-                                 'avg_x': {'value': laser_avg_x.magnitude, 'units': str(laser_avg_x.units)}},
-                             'set_y':{
-                                 'type':'set_avg',
-                                 'variables': 'y',
-                                 'avg_y': {'value': laser_avg_y.magnitude, 'units': str(laser_avg_y.units)}}
-                         }})
+                         'transforms':[
+                             {'type':'set_avg x', 'avg_x': {'value': laser_avg_x.magnitude, 'units': str(laser_avg_x.units)}},
+                             {'type':'set_avg y', 'avg_y': {'value': laser_avg_y.magnitude, 'units': str(laser_avg_y.units)}}
+                         ]})
  
         gen = Generator(distgen_input, verbose=True)     
         beam = gen.beam()   
@@ -187,6 +181,9 @@ class b24Model():
                 
         # transmission
         output[f'{tag}beam:transmission'] = [100*len(screen['x'])/inputs[f'{tag}gpt:n_particle'].magnitude for screen in G.screen]
+    
+        min_clearance = np.min( (inputs[f'{tag}beampipe:radius']-self.gpt_stat_to_pv(G, f'{stat}_{var}', 'screen') ) ).to('mm')
+        output[f'{tag}beam:radiation'] = output[f'{tag}gun:current']*np.max(output[f'{tag}beam:mean_kinetic_energy'])/min_clearance.magnitude
         #----------------------------------------------------------------------------
 
 

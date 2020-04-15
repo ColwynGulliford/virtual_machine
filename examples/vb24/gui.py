@@ -157,7 +157,7 @@ def get_fractional_laser_power(laser_pvs, pvdb):
 frac_power = get_fractional_laser_power(laser_pvs, pvdb)
 
 avgz = beam_pvs['beam:mean_z'].value
-beamsize_plot = figure(plot_height=200, plot_width=800, title="vB24", tools="crosshair,pan,reset,save,wheel_zoom", x_range=[0, avgz[-1]], y_range=[-5,5])
+beamsize_plot = figure(plot_height=200, plot_width=800, title="vB24", tools="crosshair,pan,reset,save,wheel_zoom", x_range=[0, avgz[-1]], y_range=[-20,20])
 beamsize_glyph = VArea(x="x", y1="y1", y2="y2", fill_color="blue", fill_alpha=frac_power)
 
 beamsize_plot.add_glyph(beamsize_source, beamsize_glyph)
@@ -184,7 +184,10 @@ keplot.yaxis.axis_label = 'KE (keV)'
 
 
 gun_current_pv = PV(f'{prefix}gun:current')
-p = Paragraph(text=f'Gun Current: {gun_current_pv.value:G} (mA)')
+gunp = Paragraph(text=f'Gun Current: {gun_current_pv.value:G} (mA)')
+
+radiation_pv = PV(f'{prefix}beam:radiation')
+radp = Paragraph(text=f'Radiation: {radiation_pv.value:G} (arb.)')
 
 def update():
 
@@ -204,7 +207,8 @@ def update():
     beamsize_glyph.update(**kwargs)
     glyphT.update(**kwargs)
 
-    p.text = f'Gun Current: {gun_current_pv.value:G} (mA)'
+    gunp.text = f'Gun Current: {gun_current_pv.value:G} (mA)'
+    radp.text = f'Radiation: {radiation_pv.value:G} (arb.)'
  
 # Quckly throw together the final pieces:
 wlength = row([wavelength_txt_box.text_input], width=500) 
@@ -213,7 +217,7 @@ laser_slider_col = column(laser_sliders, width=350)
 beamline_slider_col = column(beamline_sliders, width=350)
 
 curdoc().add_root(  row(column(laser_on_button, wlength, laser_fig, laser_slider_col), 
-                        column(beamsize_plot, transplot, keplot,    row(beamline_slider_col,p)))  )
+                        column(beamsize_plot, transplot, keplot,    row(beamline_slider_col,gunp,radp)))  )
 
 #curdoc().add_root( row(column(buttons, p1, xyscol), column(xyplot,transplot,keplot,bscol))  ) 
 curdoc().add_periodic_callback(update, 250)

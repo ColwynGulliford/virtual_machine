@@ -104,9 +104,15 @@ input:
   
   scr1:mean_z:
     type: float
-    value: 1.5
+    value: 3.5
     prec: 16
     unit: 'mm'
+
+  beampipe:radius:
+    type: float
+    value: 19.05
+    unit: mm
+    prec: 162
 
 output:
 
@@ -217,5 +223,12 @@ output:
     value: 0
     prec: 16
     unit: mm
+
+  beam:radiation:
+    type: float
+    value: 0
+    prec: 16
+    unit: ''
+
 
     
