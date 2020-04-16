@@ -131,10 +131,10 @@ class b24Model():
                              'sigma_xy':{'value': laser_sigma_xy.magnitude, 'units': str(laser_sigma_xy.units)},
                              'alpha':{'value': laser_alpha_xy.magnitude, 'units': str(laser_alpha_xy.units)},},
 
-                         'transforms':[
-                             {'type':'set_avg x', 'avg_x': {'value': laser_avg_x.magnitude, 'units': str(laser_avg_x.units)}},
-                             {'type':'set_avg y', 'avg_y': {'value': laser_avg_y.magnitude, 'units': str(laser_avg_y.units)}}
-                         ]})
+                         'transforms':{
+                             't1':{'type':'set_avg x', 'avg_x': {'value': laser_avg_x.magnitude, 'units': str(laser_avg_x.units)}},
+                             't2':{'type':'set_avg y', 'avg_y': {'value': laser_avg_y.magnitude, 'units': str(laser_avg_y.units)}}
+                         }})
  
         gen = Generator(distgen_input, verbose=True)     
         beam = gen.beam()   
